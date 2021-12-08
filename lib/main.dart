@@ -72,7 +72,7 @@ class MyHomePage extends StatelessWidget {
                     padding: EdgeInsets.all(10),
                     decoration: BoxDecoration(
                         border: Border.all(
-                      color: Colors.purple,
+                      color: Colors.indigo,
                       width: 2,
                     )),
                     child: Text(
@@ -80,7 +80,7 @@ class MyHomePage extends StatelessWidget {
                       style: const TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 20,
-                          color: Colors.purple),
+                          color: Colors.indigo),
                     ),
                   ),
                   Column(
