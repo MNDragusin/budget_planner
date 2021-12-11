@@ -5,7 +5,7 @@ class DummyData {
     List<Transaction> transactions = List.generate(count, (index) {
       return Transaction(
           id: "$index",
-          title: "Title$index",
+          title: "Title_$index",
           amount: (10 + index).toDouble(),
           date: DateTime.now());
     });
