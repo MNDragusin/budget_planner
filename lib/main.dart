@@ -16,7 +16,12 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
-      theme: ThemeData(primarySwatch: Colors.indigo, accentColor: Colors.amber),
+      theme: ThemeData(
+          primarySwatch: Colors.indigo,
+          accentColor: Colors.amber,
+          fontFamily: 'Quicksand',
+          appBarTheme: const AppBarTheme(
+              toolbarTextStyle: TextStyle(fontFamily: "OpenSans"))),
       home: MyHomePage(title: 'Budget Planner'),
     );
   }
