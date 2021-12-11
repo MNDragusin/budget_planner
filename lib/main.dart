@@ -1,5 +1,10 @@
-import 'package:budget_planner/Widgets/user_transactions.dart';
 import 'package:flutter/material.dart';
+
+import 'package:budget_planner/Widgets/new_transation.dart';
+
+import 'Model/dummy_data.dart';
+import 'Model/transaction.dart';
+import 'Widgets/transaction_list.dart';
 
 void main() {
   runApp(const MyApp());
@@ -19,9 +24,36 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class MyHomePage extends StatelessWidget {
+class MyHomePage extends StatefulWidget {
   MyHomePage({Key? key, required this.title}) : super(key: key);
   final String title;
+
+  @override
+  State<MyHomePage> createState() => _MyHomePageState();
+}
+
+class _MyHomePageState extends State<MyHomePage> {
+  void startAddNewTransaction(BuildContext ctx) {
+    showModalBottomSheet(
+        context: ctx,
+        builder: (_) {
+          return NewTransaction(_addNewTransaction);
+        });
+  }
+
+  final List<Transaction> _transactions = DummyData.getDummyTransactionList(10);
+
+  void _addNewTransaction(String txTitle, double txAmount) {
+    final newTx = Transaction(
+        id: DateTime.now().toString(),
+        title: txTitle,
+        amount: txAmount,
+        date: DateTime.now());
+
+    setState(() {
+      _transactions.add(newTx);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -29,10 +61,11 @@ class MyHomePage extends StatelessWidget {
       appBar: AppBar(
         elevation: 5,
         actions: [
-          IconButton(onPressed: () {}, icon: Icon(Icons.add)),
-          IconButton(onPressed: null, icon: Icon(Icons.add))
+          IconButton(
+              onPressed: () => startAddNewTransaction(context),
+              icon: const Icon(Icons.add))
         ],
-        title: Text(title),
+        title: Text(widget.title),
       ),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.start,
@@ -47,11 +80,11 @@ class MyHomePage extends StatelessWidget {
             elevation: 5,
             color: Colors.grey[300],
           ),
-          UserTransactions()
+          TransactionList(_transactions)
         ],
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: null,
+        onPressed: () => startAddNewTransaction(context),
         tooltip: 'Add New',
         child: const Icon(Icons.add),
       ),
