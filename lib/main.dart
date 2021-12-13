@@ -1,3 +1,4 @@
+import 'package:budget_planner/Widgets/chart.dart';
 import 'package:flutter/material.dart';
 
 import 'package:budget_planner/Widgets/new_transation.dart';
@@ -45,6 +46,13 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   final List<Transaction> _transactions = DummyData.getDummyTransactionList(10);
+  //final List<Transaction> _transactions = [];
+
+  List<Transaction> get _recentTransactions {
+    return _transactions.where((tr) {
+      return tr.date.isAfter(DateTime.now().subtract(const Duration(days: 7)));
+    }).toList();
+  }
 
   void _addNewTransaction(String txTitle, double txAmount) {
     final newTx = Transaction(
@@ -73,18 +81,7 @@ class _MyHomePageState extends State<MyHomePage> {
       body: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          Card(
-            child: Container(
-                padding: EdgeInsets.all(10),
-                width: double.infinity,
-                height: 150,
-                child: const Center(child: Text("Chart"))),
-            elevation: 5,
-            color: Colors.grey[300],
-          ),
-          TransactionList(_transactions)
-        ],
+        children: [Chart(_recentTransactions), TransactionList(_transactions)],
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () => startAddNewTransaction(context),
