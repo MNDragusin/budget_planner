@@ -5,61 +5,48 @@ import 'package:budget_planner/Model/transaction.dart';
 
 class TransactionList extends StatelessWidget {
   final List<Transaction> _transactions;
+  final Function _delTx;
 
-  TransactionList(this._transactions);
+  TransactionList(this._transactions, this._delTx);
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 460,
-      child: _transactions.isEmpty
-          ? Image.asset(
-              "Assets/Images/waiting.png",
-              fit: BoxFit.fitHeight,
-            )
-          : ListView.builder(
-              itemBuilder: (ctx, index) {
-                return Card(
-                  elevation: 5,
-                  child: Row(
-                    children: [
-                      Container(
-                        margin:
-                            EdgeInsets.symmetric(vertical: 0, horizontal: 15),
-                        padding: EdgeInsets.all(10),
-                        decoration: BoxDecoration(
-                            border: Border.all(
-                          color: Theme.of(context).primaryColor,
-                          width: 2,
-                        )),
-                        child: Text(
-                          "${_transactions[index].amount.toStringAsFixed(2)} RON",
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 20,
-                              color: Theme.of(context).primaryColor),
-                        ),
-                      ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            _transactions[index].title,
-                            style: const TextStyle(fontSize: 18),
-                          ),
-                          Text(
-                            DateFormat("EEE, d/M/y - H:m")
-                                .format(_transactions[index].date),
-                            style: const TextStyle(color: Colors.grey),
-                          )
-                        ],
-                      )
-                    ],
+    return _transactions.isEmpty
+        ? Image.asset(
+            "Assets/Images/waiting.png",
+            fit: BoxFit.fitHeight,
+          )
+        : ListView.builder(
+            itemBuilder: (ctx, index) {
+              return Card(
+                key: ValueKey(_transactions[index].id),
+                elevation: 5,
+                margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 5),
+                child: ListTile(
+                  leading: CircleAvatar(
+                    radius: 30,
+                    child: Padding(
+                      padding: const EdgeInsets.all(6.0),
+                      child: FittedBox(
+                          child: Text(_transactions[index].amount.toString())),
+                    ),
                   ),
-                );
-              },
-              itemCount: _transactions.length,
-            ),
-    );
+                  title: Text(
+                    _transactions[index].title,
+                    style: Theme.of(context).textTheme.headline4,
+                  ),
+                  subtitle: Text(
+                      DateFormat.yMMMEd().format(_transactions[index].date),
+                      style: Theme.of(context).textTheme.subtitle1),
+                  trailing: IconButton(
+                    icon: Icon(Icons.delete),
+                    color: Theme.of(context).colorScheme.error,
+                    onPressed: () => _delTx(_transactions[index].id),
+                  ),
+                ),
+              );
+            },
+            itemCount: _transactions.length,
+          );
   }
 }

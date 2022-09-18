@@ -11,30 +11,39 @@ class ChartBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Text(_spendingAmount.toStringAsFixed(0)),
-        SizedBox(height: 10),
-        Container(
-          height: 150,
-          width: 150 / 4,
-          decoration: BoxDecoration(
-              color: Colors.grey[220],
-              border: Border.all(color: Colors.grey, width: 2),
-              borderRadius: BorderRadius.circular(20)),
-          child: FractionallySizedBox(
-            alignment: Alignment.bottomCenter,
-            heightFactor: _spendingPctOfTotal,
-            child: Container(
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        return Column(
+          children: [
+            Container(
+                height: constraints.maxHeight * 0.15,
+                child:
+                    FittedBox(child: Text(_spendingAmount.toStringAsFixed(0)))),
+            SizedBox(height: constraints.maxHeight * 0.05),
+            Container(
+              height: constraints.maxHeight * 0.6,
+              width: constraints.maxWidth * 0.35,
               decoration: BoxDecoration(
-                  color: Theme.of(context).indicatorColor,
+                  color: Colors.grey[220],
+                  border: Border.all(color: Colors.grey, width: 2),
                   borderRadius: BorderRadius.circular(20)),
+              child: FractionallySizedBox(
+                alignment: Alignment.bottomCenter,
+                heightFactor: _spendingPctOfTotal,
+                child: Container(
+                  decoration: BoxDecoration(
+                      color: Theme.of(context).indicatorColor,
+                      borderRadius: BorderRadius.circular(20)),
+                ),
+              ),
             ),
-          ),
-        ),
-        SizedBox(height: 10),
-        Text(_lable),
-      ],
+            SizedBox(height: constraints.maxHeight * 0.05),
+            Container(
+                height: constraints.maxHeight * 0.15,
+                child: FittedBox(child: Text(_lable))),
+          ],
+        );
+      },
     );
   }
 }

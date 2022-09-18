@@ -6,12 +6,9 @@ import 'package:intl/intl.dart';
 import 'chart_bar.dart';
 
 class Chart extends StatelessWidget {
-  Chart(this._recentTransaction) {
-    _recentTransaction.forEach((element) => _totalAmount += element.amount);
-  }
+  Chart(this._recentTransaction);
 
   final List<Transaction> _recentTransaction;
-  late double _totalAmount = 0;
 
   List<Map<String, Object>> get groupedTransactionValues {
     return List.generate(7, (index) {
@@ -29,18 +26,29 @@ class Chart extends StatelessWidget {
     });
   }
 
+  double get _totalSpending {
+    return _recentTransaction.fold(0.0, (sum, item) {
+      return sum + item.amount;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Card(
       elevation: 6,
       margin: EdgeInsets.all(20),
-      child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: groupedTransactionValues.map((e) {
-            var amount = double.parse(e['amount'].toString());
-            double prc = amount == 0 ? 0 : amount / _totalAmount;
-            return ChartBar(e['day'].toString(), amount, prc);
-          }).toList()),
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: groupedTransactionValues.map((e) {
+              var amount = double.parse(e['amount'].toString());
+              double prc = amount == 0 ? 0 : amount / _totalSpending;
+              return Flexible(
+                  fit: FlexFit.tight,
+                  child: ChartBar(e['day'].toString(), amount, prc));
+            }).toList()),
+      ),
     );
   }
 }
