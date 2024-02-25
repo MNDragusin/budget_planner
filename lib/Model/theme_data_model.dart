@@ -5,7 +5,7 @@ class ThemeDataModel {
   static ThemeData androidThemeData() {
     return ThemeData(
         primarySwatch: Colors.indigo,
-        accentColor: Colors.amber,
+        secondaryHeaderColor: Colors.amber,
         fontFamily: 'Quicksand',
         appBarTheme: const AppBarTheme(
             toolbarTextStyle: TextStyle(fontFamily: "OpenSans")));
